@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 //import { Sparklines, SparklinesLine } from "react-sparklines";
 import Chart from "../components/charts";
 import GoogleMaps from "../components/google_maps";
+import SortColumn from "../components/sort_column";
+import { sortWeather } from "../actions/index";
 class WeatherList extends Component {
   renderWeather(cityData) {
     const name = cityData.city.name;
@@ -41,22 +45,23 @@ class WeatherList extends Component {
   render() {
     return (
       <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>City</th>
-            <th>Temperature (Kelvin)</th>
-            <th>Pressure (hPa)</th>
-            <th>Humidity (%)</th>
-          </tr>
-        </thead>
+        <SortColumn />
         <tbody>{this.props.weather.map(this.renderWeather)}</tbody>
       </table>
     );
   }
 }
 
-function mapStateToProps({ weather }) {
-  return { weather };
+function mapStateToProps({ weather, sort }) {
+  return { weather, sort };
+}
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      sortWeather
+    },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps)(WeatherList);
