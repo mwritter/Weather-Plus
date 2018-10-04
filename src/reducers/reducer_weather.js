@@ -1,4 +1,5 @@
-import { FETCH_WEATHER } from "../actions/index";
+import { FETCH_WEATHER, SORT_WEATHER } from "../actions/index";
+
 import _ from "lodash";
 
 export default function(state = [], action) {
@@ -22,12 +23,19 @@ export default function(state = [], action) {
       const avgPre = average(pressure);
       const data = {
         ...action.payload.data,
-        avgTemp: avgTemp,
-        avgHum: avgHum,
-        avgPre: avgPre
+        "Temperature (Kelvin)": avgTemp,
+        "Pressure (hPa)": avgPre,
+        "Humidity (%)": avgHum
       };
       console.log(data);
       return [data, ...state];
+
+    case SORT_WEATHER:
+      console.log(action.payload);
+      switch (action.payload) {
+        case { sort: "city", order: "asc" }:
+          console.log(action.payload);
+      }
   }
   return state;
 }

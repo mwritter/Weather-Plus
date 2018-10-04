@@ -1,5 +1,5 @@
 import { SORT_WEATHER } from "../actions/index";
-export default function(state = { sort: "cityName", order: "asc" }, action) {
+export default function(state = { sort: "city", order: "asc" }, action) {
   switch (action.type) {
     case SORT_WEATHER:
       console.log("sortWeather");

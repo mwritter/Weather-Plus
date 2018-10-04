@@ -27,3 +27,8 @@ td:first-of-type > div {
   height: 300px;
   width: 400px;
 }
+
+.active {
+  font-weight: bold;
+  text-decoration: underline;
+}

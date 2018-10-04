@@ -8,6 +8,26 @@ import GoogleMaps from "../components/google_maps";
 import SortColumn from "../components/sort_column";
 import { sortWeather } from "../actions/index";
 class WeatherList extends Component {
+  weatherOrder(a, b) {
+    if (this.props.sort.order === "asc") {
+      if (a < b) {
+        return -1;
+      }
+      if (a > b) {
+        return 1;
+      }
+      return 0;
+    } else {
+      if (a < b) {
+        return 1;
+      }
+      if (a > b) {
+        return -1;
+      }
+      return 0;
+    }
+  }
+
   renderWeather(cityData) {
     const name = cityData.city.name;
     const { lon, lat } = cityData.city.coord;
@@ -43,10 +63,24 @@ class WeatherList extends Component {
     );
   }
   render() {
+    const newWeatherList = this.props.weather.slice().sort((a, b) => {
+      if (this.props.sort.sort === "city") {
+        return this.weatherOrder(a.city.name, b.city.name);
+      }
+      const sort = this.props.sort.sort;
+      console.log(sort);
+      return this.weatherOrder(a[sort], b[sort]);
+    });
+    console.log(newWeatherList);
     return (
       <table className="table table-hover">
-        <SortColumn />
-        <tbody>{this.props.weather.map(this.renderWeather)}</tbody>
+        <SortColumn
+          setSort={this.props.sortWeather}
+          currentSort={this.props.sort.sort}
+          currentOrder={this.props.sort.order}
+        />
+
+        <tbody>{newWeatherList.map(this.renderWeather)}</tbody>
       </table>
     );
   }
@@ -64,4 +98,7 @@ function mapDispatchToProps(dispatch) {
   );
 }
 
-export default connect(mapStateToProps)(WeatherList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WeatherList);
